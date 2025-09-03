@@ -1,7 +1,14 @@
 package br.csi.trilhagaucha;
 
+import br.csi.trilhagaucha.model.Usuario;
+import br.csi.trilhagaucha.repository.UsuarioRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+
+import java.beans.BeanProperty;
 
 @SpringBootApplication
 public class TrilhaGauchaApplication {
@@ -10,4 +17,12 @@ public class TrilhaGauchaApplication {
 		SpringApplication.run(TrilhaGauchaApplication.class, args);
 	}
 
+	@Bean
+	public CommandLineRunner commandLineRunner(UsuarioRepository repository) {
+		return args -> {
+//			Usuario usuario = new Usuario("Bruno Muniz","bruno@gmail.com","123456 ");
+//			repository.save(usuario);
+		};
+
+	}
 }
