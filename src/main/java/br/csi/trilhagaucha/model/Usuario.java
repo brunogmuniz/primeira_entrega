@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
@@ -26,7 +27,12 @@ public class Usuario {
     private UUID uuid;
 
     private String nome;
+
+    @NotNull
+    @Column(unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String senha;
 
     @PrePersist
