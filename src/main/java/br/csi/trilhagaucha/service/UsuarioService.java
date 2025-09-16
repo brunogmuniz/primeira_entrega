@@ -3,6 +3,8 @@ package br.csi.trilhagaucha.service;
 
 import br.csi.trilhagaucha.model.Usuario;
 import br.csi.trilhagaucha.repository.UsuarioRepository;
+import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,12 +12,15 @@ import java.util.List;
 @Service
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {this.usuarioRepository = usuarioRepository;}
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Usuario login(String email, String senha) {
         return usuarioRepository.findByEmail(email)
-                .filter(usuario -> usuario.getSenha().equals(senha))
+                .filter(usuario -> passwordEncoder.matches(senha, usuario.getSenha()))
                 .orElseThrow(() -> new RuntimeException("Email ou senha inválidos"));
     }
 
@@ -26,10 +31,22 @@ public class UsuarioService {
     public Usuario getUsuario(Long id) {return usuarioRepository.findById(id).get();}
 
     public void atualizar(Usuario usuario) {
-        Usuario usuarioAtual = usuarioRepository.findById(usuario.getId()).get();
+        Usuario usuarioAtual = usuarioRepository.findById(usuario.getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         usuarioAtual.setNome(usuario.getNome());
         usuarioAtual.setEmail(usuario.getEmail());
-        usuarioAtual.setSenha(usuario.getSenha());
+
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            usuarioAtual.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
         usuarioRepository.save(usuarioAtual);
+    }
+
+    public Usuario cadastrar(@Valid Usuario usuario) {
+        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
+            throw new RuntimeException("Email já cadastrado");
+        }
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        return usuarioRepository.save(usuario);
     }
 }

@@ -43,6 +43,18 @@ public class UsuarioController {
                     .body(Collections.singletonMap("erro", e.getMessage()));
         }
     }
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<?> cadastrar(@RequestBody @Valid Usuario usuario) {
+        try {
+            Usuario novoUsuario = usuarioService.cadastrar(usuario);
+            UsuarioDTO dto = new UsuarioDTO(novoUsuario.getUuid(), novoUsuario.getEmail());
+            return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("erro", e.getMessage()));
+        }
+    }
 }
 
 
