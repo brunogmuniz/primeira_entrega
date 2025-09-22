@@ -26,7 +26,6 @@ public class Cidade {
 
 
 
-
 public enum Regiao {
     NORTE, LITORAL, METROPOLITANA , MISSÕES , CENTRO_OESTE, SERRA
 }

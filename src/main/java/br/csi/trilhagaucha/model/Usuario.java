@@ -1,14 +1,13 @@
 package br.csi.trilhagaucha.model;
 
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -29,16 +28,27 @@ public class Usuario {
     private String nome;
 
     @NotNull
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @NotNull
     @Column(nullable = false)
     private String senha;
 
+
+    private Boolean isAdmin = false;
+
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataLogin;
+
     @PrePersist
-    public void gerarUUID() {
+    public void prePersist() {
         if (uuid == null) {
             uuid = UUID.randomUUID();
+        }
+        if (dataLogin == null) {
+            dataLogin = new Date();
         }
     }
 

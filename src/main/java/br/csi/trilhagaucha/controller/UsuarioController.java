@@ -55,6 +55,12 @@ public class UsuarioController {
                     .body(Collections.singletonMap("erro", e.getMessage()));
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluir(@PathVariable Long id) {
+        usuarioService.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 
 
