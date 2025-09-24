@@ -1,7 +1,6 @@
 package br.csi.trilhagaucha.dto;
 
 
-import br.csi.trilhagaucha.model.Usuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package br.csi.trilhagaucha.service;
 
 
-import br.csi.trilhagaucha.model.Usuario;
+import br.csi.trilhagaucha.model.usuario.Usuario;
 import br.csi.trilhagaucha.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,5 +53,25 @@ public class UsuarioService {
     public void excluir(Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
         usuarioRepository.delete(usuario);
+    }
+
+    public void excluirUUID(String uuid) {
+        usuarioRepository.deleteUsuarioByUuid(java.util.UUID.fromString(uuid));
+    }
+
+    public void atualizarUUID(Usuario usuario) {
+        Usuario usuarioAtual = usuarioRepository.findByUuid(String.valueOf(usuario.getUuid()))
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        usuarioAtual.setNome(usuario.getNome());
+        usuarioAtual.setEmail(usuario.getEmail());
+
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            usuarioAtual.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
+        usuarioRepository.save(usuarioAtual);
+    }
+
+    public Usuario getUsuarioUUID(String uuid) {
+        return usuarioRepository.findByUuid(uuid).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 }

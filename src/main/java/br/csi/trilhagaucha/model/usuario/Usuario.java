@@ -1,11 +1,9 @@
-package br.csi.trilhagaucha.model;
+package br.csi.trilhagaucha.model.usuario;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.UUID;
@@ -16,26 +14,32 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "usuarios")
+@Schema(description = "Entidade que representa um usuário no sistema")
 public class Usuario {
 
     @Id
+    @Schema(description = "ID do usuário", example = "1")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Column(unique = true, nullable = false, updatable = false)
     private UUID uuid;
 
+    @NonNull
+    @Schema(description = "Nome do usuário", example = "Felipe")
     private String nome;
 
-    @NotNull
+    @NonNull
     @Column(unique = true, nullable = false)
     private String email;
 
-    @NotNull
+    @NonNull
+    @JsonIgnore
     @Column(nullable = false)
     private String senha;
 
-
+    @JsonIgnore
     private Boolean isAdmin = false;
 
 

@@ -1,4 +1,4 @@
-package br.csi.trilhagaucha.model;
+package br.csi.trilhagaucha.model.cidade;
 
 
 import jakarta.persistence.*;
