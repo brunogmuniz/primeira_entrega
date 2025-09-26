@@ -1,11 +1,9 @@
 package br.csi.trilhagaucha.model.cidade;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -19,9 +17,17 @@ public class Cidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
+    @Schema(description = "Nome da cidade", example = "Santa Maria")
     private String nome;
+
+    @Schema(description = "Regiao da cidade", example = "Serra")
     private Regiao regiao;
+    @NonNull
+    @Schema(description = "Latitude da cidade")
     private Double latitude;
+    @NonNull
+    @Schema(description = "Longitude da cidade")
     private Double longitude;
 
 
