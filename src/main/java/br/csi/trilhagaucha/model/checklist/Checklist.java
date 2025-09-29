@@ -21,7 +21,6 @@ public class Checklist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private boolean visitado = false;
 
     @Column(name = "data_visita")
