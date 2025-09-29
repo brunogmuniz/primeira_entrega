@@ -14,6 +14,7 @@ import lombok.*;
 @Table(name = "cidades")
 public class Cidade {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
