@@ -1,6 +1,7 @@
 package br.csi.trilhagaucha.model.cidade;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,6 +23,7 @@ public class Cidade {
     private String nome;
 
     @Schema(description = "Regiao da cidade", example = "Serra")
+    @Enumerated(EnumType.STRING)
     private Regiao regiao;
     @NonNull
     @Schema(description = "Latitude da cidade")
@@ -32,10 +34,14 @@ public class Cidade {
 
 
 
-public enum Regiao {
-    NORTE, LITORAL, METROPOLITANA , MISSÕES , CENTRO_OESTE, SERRA
-}
-
+    public enum Regiao {
+        Norte,
+        Serra,
+        Litoral,
+        CentroOeste,
+        Missoes,
+        Metropolitana
+    }
 
     //    -- 3️⃣ Tabela cidades
 //    CREATE TABLE cidades (

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UsuarioService {
@@ -60,7 +61,7 @@ public class UsuarioService {
     }
 
     public void atualizarUUID(Usuario usuario) {
-        Usuario usuarioAtual = usuarioRepository.findByUuid(String.valueOf(usuario.getUuid()))
+        Usuario usuarioAtual = usuarioRepository.findByUuid(usuario.getUuid())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         usuarioAtual.setNome(usuario.getNome());
         usuarioAtual.setEmail(usuario.getEmail());
@@ -71,7 +72,7 @@ public class UsuarioService {
         usuarioRepository.save(usuarioAtual);
     }
 
-    public Usuario getUsuarioUUID(String uuid) {
+    public Usuario getUsuarioUUID(UUID uuid) {
         return usuarioRepository.findByUuid(uuid).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 }

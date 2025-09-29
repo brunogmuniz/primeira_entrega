@@ -53,7 +53,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = "404", description = "Usuario não encontrado", content = @Content)})
     
     @GetMapping("/{uiid}")
-    public Usuario buscarPorUiid(@PathVariable UUID uiid) {return usuarioService.getUsuarioUUID(String.valueOf(uiid));}
+    public Usuario buscarPorUiid(@PathVariable UUID uiid) {return usuarioService.getUsuarioUUID(uiid);}
 
     // localhost:8080/usuarios/login - POST
     @PostMapping("/login")

@@ -34,8 +34,7 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @NonNull
-    @JsonIgnore
+
     @Column(nullable = false)
     private String senha;
 

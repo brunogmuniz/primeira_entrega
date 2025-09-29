@@ -3,8 +3,8 @@ CREATE TYPE regioes AS ENUM (
     'Norte',
     'Serra',
     'Litoral',
-    'Centro-Oeste',
-    'Missões',
+    'CentroOeste',
+    'Missoes',
     'Metropolitana'
 );
 
