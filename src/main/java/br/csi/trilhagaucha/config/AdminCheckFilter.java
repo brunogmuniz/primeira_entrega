@@ -28,7 +28,7 @@ public class AdminCheckFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getRequestURI().startsWith("/usuarios")) {
+        if (request.getRequestURI().startsWith("/usuarios/listar")) {
             String authHeader = request.getHeader("Authorization");
             if (authHeader == null || !authHeader.startsWith("Basic ")) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Não autorizado");

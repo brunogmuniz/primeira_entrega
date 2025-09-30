@@ -7,6 +7,7 @@ import br.csi.trilhagaucha.service.ChecklistService;
 import br.csi.trilhagaucha.service.CidadeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,10 @@ public class ChecklistController {
     @Autowired
     private ChecklistService checklistService;
 
+    @GetMapping("/{uuid}")
     public List<Checklist> findByUsuarioUUID(@PathVariable String uuid) {
         return checklistService.findByUsuarioUUID(UUID.fromString(uuid));
     }
+
+
 }

@@ -28,10 +28,10 @@ public class Checklist {
     private LocalDateTime data_visita;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "id_cidade", nullable = false)
+    @JoinColumn(name = "cidade_id", nullable = false)
     private Cidade cidade;
 }

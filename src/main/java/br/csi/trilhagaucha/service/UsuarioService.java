@@ -1,19 +1,31 @@
 package br.csi.trilhagaucha.service;
 
 
+import br.csi.trilhagaucha.model.checklist.Checklist;
+import br.csi.trilhagaucha.model.cidade.Cidade;
 import br.csi.trilhagaucha.model.usuario.Usuario;
+import br.csi.trilhagaucha.repository.ChecklistRepository;
+import br.csi.trilhagaucha.repository.CidadeRepository;
 import br.csi.trilhagaucha.repository.UsuarioRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UsuarioService {
+    @Autowired
     private final UsuarioRepository usuarioRepository;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private CidadeRepository cidadeRepository;
+    @Autowired
+    private ChecklistRepository checklistRepository;
 
     public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
@@ -48,7 +60,19 @@ public class UsuarioService {
             throw new RuntimeException("Email já cadastrado");
         }
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        return usuarioRepository.save(usuario);
+        usuarioRepository.save(usuario);
+        List<Cidade> cidades = cidadeRepository.findAll();
+        List<Checklist> checklists = new ArrayList<>();
+        for (Cidade cidade : cidades) {
+            Checklist checklist = new Checklist();
+            checklist.setCidade(cidade);
+            checklist.setUsuario(usuario);
+            checklist.setVisitado(false);
+            checklist.setData_visita(null);
+            checklists.add(checklist);
+        }
+        checklistRepository.saveAll(checklists);
+        return usuario;
     }
 
     public void excluir(Long id) {

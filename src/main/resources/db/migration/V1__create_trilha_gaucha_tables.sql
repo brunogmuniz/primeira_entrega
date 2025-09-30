@@ -28,12 +28,21 @@ latitude DECIMAL(9,6),
 longitude DECIMAL(9,6)
 );
 
+-- 🔹 Índices em cidades
+CREATE INDEX idx_cidades_nome   ON cidades (nome);
+CREATE INDEX idx_cidades_regiao ON cidades (regiao);
+
 -- 4️⃣ Tabela checklists
 CREATE TABLE checklists (
 id SERIAL PRIMARY KEY,
-id_usuario INT REFERENCES usuarios(id) ON DELETE CASCADE,
-id_cidade INT REFERENCES cidades(id) ON DELETE CASCADE,
+usuario_id INT REFERENCES usuarios(id) ON DELETE CASCADE,
+cidade_id INT REFERENCES cidades(id) ON DELETE CASCADE,
 visitado BOOLEAN DEFAULT FALSE,
-data_visita TIMESTAMP
+data_visita TIMESTAMP,
+CONSTRAINT uq_usuario_cidade UNIQUE (usuario_id, cidade_id)
 );
 
+-- 🔹 Índices em checklists
+CREATE INDEX idx_checklists_usuario_id ON checklists (usuario_id);
+CREATE INDEX idx_checklists_cidade_id  ON checklists (cidade_id);
+CREATE INDEX idx_checklists_visitado   ON checklists (visitado);
