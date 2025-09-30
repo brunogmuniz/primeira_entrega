@@ -60,20 +60,9 @@ public class UsuarioService {
             throw new RuntimeException("Email já cadastrado");
         }
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        usuarioRepository.save(usuario);
-        List<Cidade> cidades = cidadeRepository.findAll();
-        List<Checklist> checklists = new ArrayList<>();
-        for (Cidade cidade : cidades) {
-            Checklist checklist = new Checklist();
-            checklist.setCidade(cidade);
-            checklist.setUsuario(usuario);
-            checklist.setVisitado(false);
-            checklist.setData_visita(null);
-            checklists.add(checklist);
-        }
-        checklistRepository.saveAll(checklists);
-        return usuario;
+        return usuarioRepository.save(usuario);
     }
+
 
     public void excluir(Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
