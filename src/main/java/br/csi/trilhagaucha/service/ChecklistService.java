@@ -1,11 +1,18 @@
 package br.csi.trilhagaucha.service;
 
 
+import br.csi.trilhagaucha.dto.RegistrarVisitasDTO;
 import br.csi.trilhagaucha.model.checklist.Checklist;
+import br.csi.trilhagaucha.model.cidade.Cidade;
+import br.csi.trilhagaucha.model.usuario.Usuario;
 import br.csi.trilhagaucha.repository.ChecklistRepository;
+import br.csi.trilhagaucha.repository.CidadeRepository;
+import br.csi.trilhagaucha.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,8 +21,34 @@ import java.util.UUID;
 public class ChecklistService {
     @Autowired
     private ChecklistRepository checklistRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private CidadeRepository cidadeRepository;
 
     public List<Checklist> findByUsuarioUUID(UUID uuid) {
         return checklistRepository.findByUsuario_uuid(uuid);
+    }
+
+    public Checklist registrarVisita(Long usuarioId, Long checklistId) {
+        Cidade cidade = cidadeRepository.findById(checklistId).orElseThrow(()-> new RuntimeException("Cidade nao encontrada"));
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(()-> new RuntimeException("Usuario nao encontrada"));
+
+        return checklistRepository.findByUsuarioAndCidade(usuario, cidade)
+                .map(checklist -> {
+                    checklist.setVisitado(true);
+                    checklist.setData_visita(LocalDateTime.now());
+                    return checklistRepository.save(checklist);
+                })
+                .orElseGet(() -> {
+
+                    Checklist checklist = new Checklist();
+                    checklist.setUsuario(usuario);
+                    checklist.setCidade(cidade);
+                    checklist.setVisitado(true);
+                    checklist.setData_visita(LocalDateTime.now());
+
+                    return checklistRepository.save(checklist);
+                });
     }
 }

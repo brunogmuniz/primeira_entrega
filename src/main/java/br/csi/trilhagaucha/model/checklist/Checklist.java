@@ -17,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name = "checklists")
 public class Checklist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
