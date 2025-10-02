@@ -30,14 +30,20 @@ public class ChecklistService {
         return checklistRepository.findByUsuario_uuid(uuid);
     }
 
-    public Checklist registrarVisita(Long usuarioId, Long checklistId) {
-        Cidade cidade = cidadeRepository.findById(checklistId).orElseThrow(()-> new RuntimeException("Cidade nao encontrada"));
+    public List<Checklist> findAll() {return checklistRepository.findAll();}
+
+    public Checklist registrarVisita(Long usuarioId, Long cidadeId) {
+        Cidade cidade = cidadeRepository.findById(cidadeId).orElseThrow(()-> new RuntimeException("Cidade nao encontrada"));
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(()-> new RuntimeException("Usuario nao encontrada"));
 
         return checklistRepository.findByUsuarioAndCidade(usuario, cidade)
                 .map(checklist -> {
-                    checklist.setVisitado(true);
                     checklist.setData_visita(LocalDateTime.now());
+                    if (checklist.isVisitado() == true) {
+                        checklist.setVisitado(false);
+                        return checklistRepository.save(checklist);
+                    }
+                    checklist.setVisitado(true);
                     return checklistRepository.save(checklist);
                 })
                 .orElseGet(() -> {

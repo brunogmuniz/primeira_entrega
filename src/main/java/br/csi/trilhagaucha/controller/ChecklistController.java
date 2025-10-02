@@ -43,4 +43,10 @@ public class ChecklistController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/listar")
+    public List<Checklist> listar() {
+        return checklistService.findAll();
+    }
+
+
 }

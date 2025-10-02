@@ -3,6 +3,8 @@ package br.csi.trilhagaucha.model.checklist;
 
 import br.csi.trilhagaucha.model.cidade.Cidade;
 import br.csi.trilhagaucha.model.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +31,7 @@ public class Checklist {
     private LocalDateTime data_visita;
 
     @ManyToOne
+    @JsonIgnoreProperties({"senha", "id", "email", "dataLogin"})
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
