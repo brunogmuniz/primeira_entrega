@@ -13,6 +13,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -48,5 +49,9 @@ public class ChecklistController {
         return checklistService.findAll();
     }
 
+    @GetMapping("/listarVisitadas")
+    public List<Optional> listarVisitadas(@RequestBody UUID uuid) {
+        return checklistService.listarVisitadas(uuid);
+    }
 
 }

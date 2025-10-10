@@ -13,4 +13,6 @@ public interface ChecklistRepository extends JpaRepository <Checklist, Long> {
     public List<Checklist> findByUsuario_uuid(UUID uuid);
 
     Optional<Checklist> findByUsuarioAndCidade(Usuario usuario, Cidade cidade);
+
+    List<Checklist> findByUsuario_uuidAndVisitado(UUID uuid, boolean visitado);
 }

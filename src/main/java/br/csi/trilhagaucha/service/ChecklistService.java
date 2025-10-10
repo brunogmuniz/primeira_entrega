@@ -57,4 +57,9 @@ public class ChecklistService {
                     return checklistRepository.save(checklist);
                 });
     }
+
+    public List<Checklist> listarVisitadas(UUID uuid) {
+        boolean visitado = true;
+        return checklistRepository.findByUsuario_uuidAndVisitado(uuid, visitado);
+    }
 }
