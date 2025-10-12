@@ -29,8 +29,13 @@ public class CidadeController {
     private CidadeService cidadeService;
 
     //     http://localhost:8080/cidades/listar
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cidade Encontrada",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = UsuarioDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Cidade não encontrado", content = @Content)})
     @GetMapping("/listar")
     @Operation(summary = "Listar Cidades", description = "Retorna a lista de cidades")
+
     public List<Cidade> listar() {return cidadeService.listar();}
 
 

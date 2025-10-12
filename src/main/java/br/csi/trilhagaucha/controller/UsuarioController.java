@@ -34,6 +34,7 @@ public class UsuarioController {
 
     // localhost:8080/usuarios/listar - GET
     @GetMapping("/listar")
+    @Operation(summary = "Lista todos os usuário", description = "Retorna todos os usuário")
     public List<Usuario> listar() {return usuarioService.getUsuarios();}
 
     // localhost:8080/usuarios/{id} - GET
@@ -51,12 +52,12 @@ public class UsuarioController {
     @Content(mediaType = "application/json", schema =
     @Schema(implementation = UsuarioDTO.class))),
     @ApiResponse(responseCode = "404", description = "Usuario não encontrado", content = @Content)})
-    
     @GetMapping("/{uiid}")
     public Usuario buscarPorUiid(@PathVariable UUID uiid) {return usuarioService.getUsuarioUUID(uiid);}
 
     // localhost:8080/usuarios/login - POST
     @PostMapping("/login")
+    @Operation(summary = "Loga usuarios apartir de um email e senha")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request) {
         try {
             Usuario logado = usuarioService.login(request.getEmail(), request.getSenha());
@@ -72,6 +73,7 @@ public class UsuarioController {
 
     // localhost:8080/usuarios/cadastrar - POST
     @PostMapping("/cadastrar")
+    @Operation(summary = "Cadastra usuarios")
     public ResponseEntity<?> cadastrar(@RequestBody @Valid Usuario usuario) {
         try {
             Usuario novoUsuario = usuarioService.cadastrar(usuario);
@@ -85,6 +87,7 @@ public class UsuarioController {
 
     // localhost:8080/usuarios/{id} - DELETE
     @DeleteMapping("/{id}")
+    @Operation(summary = "Excluir usuarios por ID")
     public ResponseEntity<?> excluir(@PathVariable Long id) {
         usuarioService.excluir(id);
         return ResponseEntity.noContent().build();
@@ -92,6 +95,7 @@ public class UsuarioController {
 
     // localhost:8080/usuarios/uuid - DELETE
     @DeleteMapping("/{uuid}")
+    @Operation(summary = "Excluir usuarios por UUID")
     public ResponseEntity<?> excluirPorUuid(@PathVariable Long id) {
         usuarioService.excluir(id);
         return ResponseEntity.noContent().build();

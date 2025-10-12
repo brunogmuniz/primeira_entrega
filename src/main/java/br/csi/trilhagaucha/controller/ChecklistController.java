@@ -2,9 +2,16 @@ package br.csi.trilhagaucha.controller;
 
 
 import br.csi.trilhagaucha.dto.RegistrarVisitasDTO;
+import br.csi.trilhagaucha.dto.UsuarioDTO;
 import br.csi.trilhagaucha.model.checklist.Checklist;
+import br.csi.trilhagaucha.model.usuario.Usuario;
 import br.csi.trilhagaucha.service.ChecklistService;
 import br.csi.trilhagaucha.service.CidadeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,31 +34,31 @@ public class ChecklistController {
     private ChecklistService checklistService;
 
     @GetMapping("/{uuid}")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Checklist Encontrada",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Usuario.class))),
+            @ApiResponse(responseCode = "404", description = "Usuario não encontrado", content = @Content)})
+    @Operation(summary = "Buscar Checklist por usuário UUID", description = "Retorna uma checklist correspondente ao UUID do usuario fornecido")
     public List<Checklist> findByUsuarioUUID(@PathVariable String uuid) {
         return checklistService.findByUsuarioUUID(UUID.fromString(uuid));
     }
 
-    @PostMapping("/visitar/{usuarioId}/{cidadeId}")
-    public ResponseEntity<?> registrarVisita(@PathVariable @Valid Long usuarioId, @PathVariable @Valid Long cidadeId) {
-        System.out.println(usuarioId);
-        checklistService.registrarVisita(usuarioId, cidadeId);
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/visitar")
+    @Operation(summary = "Registrar Visita de um usuario a uma cidade", description = "Registra a visita de um usuário a uma cidade")
     public ResponseEntity<?> registrarVisita(@RequestBody RegistrarVisitasDTO dto) {
         checklistService.registrarVisita(dto.getUsuarioId(), dto.getCidadeId());
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/listar")
+    @Operation(summary = "Listar Checklists", description = "Retorna a lista de checklists")
     public List<Checklist> listar() {
         return checklistService.findAll();
     }
 
-    @GetMapping("/listarVisitadas")
-    public List<Optional> listarVisitadas(@RequestBody UUID uuid) {
-        return checklistService.listarVisitadas(uuid);
-    }
+//    @GetMapping("/listarVisitadas")
+//    public List<Optional> listarVisitadas(@RequestBody UUID uuid) {
+//        return checklistService.listarVisitadas(uuid);
+//    }
 
 }
