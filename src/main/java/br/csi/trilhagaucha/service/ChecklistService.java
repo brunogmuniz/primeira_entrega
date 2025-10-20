@@ -39,10 +39,6 @@ public class ChecklistService {
         return checklistRepository.findByUsuarioAndCidade(usuario, cidade)
                 .map(checklist -> {
                     checklist.setData_visita(LocalDateTime.now());
-                    if (checklist.isVisitado() == true) {
-                        checklist.setVisitado(false);
-                        return checklistRepository.save(checklist);
-                    }
                     checklist.setVisitado(true);
                     return checklistRepository.save(checklist);
                 })
@@ -57,6 +53,25 @@ public class ChecklistService {
                     return checklistRepository.save(checklist);
                 });
     }
+
+    public void removerVisita(Long usuarioId, Long cidadeId) {
+        Cidade cidade = cidadeRepository.findById(cidadeId)
+                .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        Optional<Checklist> checklistOpt = checklistRepository.findByUsuarioAndCidade(usuario, cidade);
+
+        if (checklistOpt.isPresent()) {
+            Checklist checklist = checklistOpt.get();
+            checklistRepository.delete(checklist);
+        } else {
+            throw new RuntimeException("Visita não encontrada para esse usuário e cidade");
+        }
+    }
+
+
 
     public List<Checklist> listarVisitadas(UUID uuid) {
         boolean visitado = true;

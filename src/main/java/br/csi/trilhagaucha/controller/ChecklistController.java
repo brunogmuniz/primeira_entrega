@@ -50,6 +50,13 @@ public class ChecklistController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/removerVisita/{cidadeId}/[usuariosId}")
+    @Operation(summary = "Remove o vinculo de Usuario e Cidade (Remove Uma Visita)", description = "Remove a visita de um usuário a uma cidade")
+    public ResponseEntity<Void> removerVisita(@PathVariable Long usuarioId, @PathVariable Long cidadeId) {
+        checklistService.removerVisita(usuarioId, cidadeId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/listar")
     @Operation(summary = "Listar Checklists", description = "Retorna a lista de checklists")
     public List<Checklist> listar() {
