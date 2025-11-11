@@ -1,6 +1,7 @@
 package br.csi.trilhagaucha.controller;
 
 
+import br.csi.trilhagaucha.config.JwtUtil;
 import br.csi.trilhagaucha.dto.LoginRequest;
 import br.csi.trilhagaucha.dto.UsuarioDTO;
 import br.csi.trilhagaucha.model.usuario.Usuario;
@@ -18,9 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -28,6 +27,9 @@ import java.util.UUID;
 public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -62,8 +64,13 @@ public class UsuarioController {
         try {
             Usuario logado = usuarioService.login(request.getEmail(), request.getSenha());
 
-            UsuarioDTO dto = new UsuarioDTO(logado.getUuid(), logado.getEmail());
-            return ResponseEntity.ok(dto);
+            String token = jwtUtil.gerarToken(logado.getEmail());
+
+            Map<String, Object> resposta = new HashMap<>();
+            resposta.put("usuario", new UsuarioDTO(logado.getUuid(), logado.getEmail()));
+            resposta.put("token", token);
+
+            return ResponseEntity.ok(resposta);
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
