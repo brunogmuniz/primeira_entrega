@@ -22,7 +22,10 @@ public class AdminCheckFilter extends OncePerRequestFilter {
     public AdminCheckFilter(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
-
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return true; // nunca filtra nenhuma requisição
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,

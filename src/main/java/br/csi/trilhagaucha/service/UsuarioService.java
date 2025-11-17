@@ -55,6 +55,12 @@ public class UsuarioService {
         usuarioRepository.save(usuarioAtual);
     }
 
+    public void redefinirSenha(UUID uuid, String senha) {
+        usuarioRepository.findByUuid(uuid);
+        Usuario usuarioAtual = usuarioRepository.findByUuid(uuid).orElseThrow(()-> new RuntimeException("Usuario nao encontrado"));
+        usuarioAtual.setSenha(passwordEncoder.encode(senha));
+        usuarioRepository.save(usuarioAtual);
+    }
     public Usuario cadastrar(@Valid Usuario usuario) {
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             throw new RuntimeException("Email já cadastrado");

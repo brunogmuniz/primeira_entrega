@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -29,12 +30,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, AdminCheckFilter adminCheckFilter) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/usuarios/listar").authenticated()
-                        .anyRequest().permitAll()
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()
+
                 )
-                .httpBasic(httpBasic -> {})
-                .addFilterBefore(adminCheckFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+                .httpBasic(httpBasic -> {});
+
 
         return http.build();
     }
