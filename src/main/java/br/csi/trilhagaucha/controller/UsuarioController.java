@@ -57,40 +57,7 @@ public class UsuarioController {
     @GetMapping("/{uiid}")
     public Usuario buscarPorUiid(@PathVariable UUID uiid) {return usuarioService.getUsuarioUUID(uiid);}
 
-    // localhost:8080/usuarios/login - POST
-    @PostMapping("/login")
-    @Operation(summary = "Loga usuarios apartir de um email e senha")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request) {
-        try {
-            Usuario logado = usuarioService.login(request.getEmail(), request.getSenha());
 
-            String token = jwtUtil.gerarToken(logado.getEmail());
-
-            Map<String, Object> resposta = new HashMap<>();
-            resposta.put("usuario", new UsuarioDTO(logado.getUuid(), logado.getEmail()));
-            resposta.put("token", token);
-
-            return ResponseEntity.ok(resposta);
-
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Collections.singletonMap("erro", e.getMessage()));
-        }
-    }
-
-    // localhost:8080/usuarios/cadastrar - POST
-    @PostMapping("/cadastrar")
-    @Operation(summary = "Cadastra usuarios")
-    public ResponseEntity<?> cadastrar(@RequestBody @Valid Usuario usuario) {
-        try {
-            Usuario novoUsuario = usuarioService.cadastrar(usuario);
-            UsuarioDTO dto = new UsuarioDTO(novoUsuario.getUuid(), novoUsuario.getEmail());
-            return ResponseEntity.status(HttpStatus.CREATED).body(dto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Collections.singletonMap("erro", e.getMessage()));
-        }
-    }
 
     // localhost:8080/usuarios/{id} - DELETE
     @DeleteMapping("/{id}")
