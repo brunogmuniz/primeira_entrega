@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
@@ -57,7 +56,7 @@ public class AuthController {
     public ResponseEntity<?> cadastrar(@RequestBody @Valid Usuario usuario) {
         try {
             Usuario novoUsuario = usuarioService.cadastrar(usuario);
-            UsuarioDTO dto = new UsuarioDTO(novoUsuario.getUuid(), novoUsuario.getEmail());
+            UsuarioDTO dto = new UsuarioDTO(novoUsuario.getUuid(), novoUsuario.getEmail(), novoUsuario.getRole_user());
             return ResponseEntity.status(HttpStatus.CREATED).body(dto);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -75,7 +74,7 @@ public class AuthController {
             String token = jwtUtil.gerarToken(logado.getEmail());
 
             Map<String, Object> resposta = new HashMap<>();
-            resposta.put("usuario", new UsuarioDTO(logado.getUuid(), logado.getEmail()));
+            resposta.put("usuario", new UsuarioDTO(logado.getUuid(), logado.getEmail(), logado.getRole_user()));
             resposta.put("token", token);
 
             return ResponseEntity.ok(resposta);
