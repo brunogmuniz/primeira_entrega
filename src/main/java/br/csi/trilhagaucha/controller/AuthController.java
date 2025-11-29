@@ -65,7 +65,7 @@ public class AuthController {
         }
     }
 
-    // localhost:8080/usuarios/login - POST
+    // localhost:8080/auth/login - POST
     @PostMapping("/login")
     @Operation(summary = "Loga usuarios apartir de um email e senha")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request) {

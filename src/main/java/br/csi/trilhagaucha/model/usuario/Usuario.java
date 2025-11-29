@@ -1,5 +1,6 @@
 package br.csi.trilhagaucha.model.usuario;
 
+import br.csi.trilhagaucha.model.ROLE_USER;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -38,8 +39,9 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
-    @JsonIgnore
-    private Boolean isAdmin = false;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role_user")
+    private ROLE_USER role_user;
 
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -8,6 +8,11 @@ CREATE TYPE regioes AS ENUM (
     'Metropolitana'
 );
 
+CREATE TYPE ROLE_USER AS ENUM (
+    'USER',
+    'ADMIN'
+);
+
 -- 2️⃣ Tabela usuarios
 CREATE TABLE usuarios (
 id SERIAL PRIMARY KEY,
@@ -15,7 +20,7 @@ uuid UUID DEFAULT gen_random_uuid() UNIQUE,
 nome VARCHAR(100) NOT NULL,
 email VARCHAR(150) UNIQUE NOT NULL,
 senha VARCHAR(255) NOT NULL,
-is_admin BOOLEAN DEFAULT FALSE,
+role_user ROLE_USER DEFAULT 'USER',
 data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
