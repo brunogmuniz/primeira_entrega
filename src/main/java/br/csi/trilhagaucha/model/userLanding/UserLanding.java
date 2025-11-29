@@ -20,7 +20,6 @@ public class UserLanding {
     @Id
     @Schema(description = "ID do usuário", example = "1")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private int id;
 
     @Column(unique = true, nullable = false, updatable = false)
